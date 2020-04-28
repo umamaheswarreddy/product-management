@@ -13,12 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cts.pm.entities.Product;
 import com.cts.pm.service.ProductService;
 
-@CrossOrigin("http://localhost:4200")
+//@CrossOrigin("http://localhost:4200")
 @RestController
 @RequestMapping("/products")
 public class ProductController {
 	
 	@Autowired
+	
 	private ProductService service;
 
 	@RequestMapping("/all")
@@ -41,7 +42,7 @@ public class ProductController {
 		service.updateProduct(product);
 	}
 	
-	@RequestMapping("/{productName")
+	@RequestMapping("/{productName}")
 	List<Product> getProductsByName(@PathVariable String productName){
 		return service.getProductsByName(productName);
 	}
