@@ -8,19 +8,13 @@ import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 @SpringBootApplication
 @EnableZuulProxy
 @EnableEurekaClient
-public class ZuulProxyServerApplication  extends LoggerImpl{
+public class ZuulProxyServerApplication {
 
 	public static void main(String[] args) {
 		
-		LoggerImpl obj=new LoggerImpl();
-		try {
+		
 		SpringApplication.run(ZuulProxyServerApplication.class, args);
-		obj.run2("zuul");
-		}
-		catch(Exception e)
-		{
-			obj.warning("Zull");
-		}
+		
 		
 	}
 
