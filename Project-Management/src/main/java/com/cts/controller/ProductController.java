@@ -1,7 +1,11 @@
 package com.cts.controller;
+
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -14,11 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cts.entity.Product;
 import com.cts.entity.Vendor;
+import com.cts.exception.GlobelException;
 import com.cts.service.ProductService;
 import com.cts.service.VendorServiceProxy;
 //import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-@CrossOrigin
+@CrossOrigin("http://localhost:4200")
 @RestController
 @RequestMapping("/products")
 public class ProductController {
@@ -26,11 +31,11 @@ public class ProductController {
 	@Autowired
 	private ProductService service;
 	
-	@Autowired
-	private VendorServiceProxy proxy;
+	
 
 	@GetMapping("/all")
 	List<Product> getAll() {
+		
 		return service.getProducts();
 	}
 
@@ -40,7 +45,7 @@ public class ProductController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/add")
-	void addProduct(@RequestBody Product product) {
+	void addProduct(@Valid @RequestBody Product product) throws GlobelException {
 		service.addProduct(product);
 	}
 
@@ -50,13 +55,26 @@ public class ProductController {
 	}
 	
 	 @RequestMapping("/dashboard/feign/vendors")
+	 @HystrixCommand(fallbackMethod = "tolerence")
 	   public  Collection<Vendor> findPeers(){
-	        return proxy.getAll();
+	        return service.getAll();
 	   }
-	 @RequestMapping(method = RequestMethod.GET,value="/dashboard/feign/{vendorId}")
-	   public Vendor findme(@PathVariable Long vendorId){
-	      return proxy.getVendorById(vendorId);
+	 
+	 public  Collection<Vendor> tolerence(){
+		 System.out.println("server down");
+	        return Arrays.asList(new Vendor(500, "df", "dsf", "7416565985", "maheshuma@gmail.com"),
+	        		new Vendor(501, "df", "dsf", "7416565985", "maheshuma@gmail.com")
+	        		            );
 	   }
+	
+	
+//	 @RequestMapping(method = RequestMethod.GET,value="/dashboard/feign/{vendorId}")
+//	   public Vendor findme(@PathVariable Long vendorId){
+//	      return service.getVendorById(vendorId);
+//	   }
+	 
+	 
+	      
 
 //	@GetMapping("/{productName}")
 //	Product searchByName(@PathVariable String productName){
@@ -78,7 +96,7 @@ public class ProductController {
 		throw new RuntimeException("Not available");
 	}
 	
-//	public List<Product> fallbackRetrievalConfiguration() {
-//		return service.getProducts(); 
-//	}
+	
+	
+
 }

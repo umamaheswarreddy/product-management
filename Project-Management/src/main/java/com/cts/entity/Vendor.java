@@ -1,19 +1,11 @@
 package com.cts.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(description = "This is the vendor model")
-@Entity(name = "vendors")
 public class Vendor {
 	@ApiModelProperty(value = "A unique key for each vendor")
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long vendorId;
 
 	@ApiModelProperty(value = "Name of the vendor")
@@ -32,6 +24,9 @@ public class Vendor {
 		super();
 	}
 
+	public Vendor(long i) {
+		this.vendorId=i;
+	}
 	public long getVendorId() {
 		return vendorId;
 	}
@@ -79,12 +74,6 @@ public class Vendor {
 
 	public void setEmailId(String emailId) {
 		this.emailId = emailId;
-	}
-	
-
-	public Vendor(long vendorId) {
-		super();
-		this.vendorId = vendorId;
 	}
 
 	@Override

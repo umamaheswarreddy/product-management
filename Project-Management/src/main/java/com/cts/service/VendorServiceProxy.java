@@ -18,6 +18,6 @@ public interface VendorServiceProxy {
 	   public Collection<Vendor> getAll();
 	 
 	 @RequestMapping("/vendor/get/{vendorId}")
-	   public Vendor getVendorById(@PathVariable Long vendorId);
+	   public Vendor getVendorById(@PathVariable int vendorId);
 
 }
